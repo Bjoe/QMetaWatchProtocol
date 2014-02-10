@@ -1,4 +1,14 @@
 
+set(HEADERS
+    core/metawatchprotocol.h
+    core/metawatchmessage.h
+    core/protocoldispatcher.h
+
+    devicetypemessage.h
+    realtimeclockmessage.h
+    watchpropertyoperationmessage.h
+)
+
 if(${Qt4})
   set(QT_MOC_HDRS
     
@@ -23,10 +33,20 @@ configure_file (
   "${CMAKE_CURRENT_BINARY_DIR}/config.h"
   )
 
-add_library(qmwmprotocol STATIC ${QT_SRCS} ${MOC_OUTFILES})
+add_library(qmwprotocol STATIC ${QT_SRCS} ${MOC_OUTFILES})
 
 if(${Qt4})
-  target_link_libraries(qmwmprotocol ${QT_LIBRARIES} ${Boost_LIBRARIES})
+  target_link_libraries(qmwprotocol ${QT_LIBRARIES} ${Boost_LIBRARIES})
 else(${Qt4})
-  target_link_libraries(qmwmprotocol Qt5::Core ${Boost_LIBRARIES})
+  target_link_libraries(qmwprotocol Qt5::Core ${Boost_LIBRARIES})
 endif(${Qt4})
+
+set_target_properties(qmwprotocol PROPERTIES
+  PUBLIC_HEADER "${HEADERS}")
+  
+install(TARGETS qmwprotocol
+  # IMPORTANT: Add the qmwprotocol library to the "export-set"
+  EXPORT QMWProtocolTargets
+  ARCHIVE DESTINATION "${INSTALL_LIB_DIR}" COMPONENT dev
+  PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}" COMPONENT dev)
+  

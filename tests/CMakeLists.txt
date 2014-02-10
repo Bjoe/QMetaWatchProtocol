@@ -26,7 +26,7 @@ include_directories(
 )
 
 set(test_additional_lib
-    qmwmprotocol
+    qmwprotocol
 )
 
 #set(test_additional
