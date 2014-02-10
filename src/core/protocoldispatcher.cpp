@@ -11,6 +11,11 @@ namespace core {
 class ProtocolDispatcher::Private
 {
 public:
+	Private() :
+		m_device(nullptr),
+		m_handlers()
+	{}
+
     qint64 send(const QByteArray &data)
     {
         if(m_device)
@@ -18,8 +23,8 @@ public:
         return 0;
     }
 
-    QIODevice *m_device = nullptr;
-    QHash<int, Message*> m_handlers{};
+    QIODevice *m_device;
+    QHash<int, Message*> m_handlers;
 };
 
 ProtocolDispatcher::ProtocolDispatcher() :
@@ -33,15 +38,16 @@ ProtocolDispatcher::~ProtocolDispatcher()
 
 void ProtocolDispatcher::initializeDevice(QIODevice *device)
 {
-    QIODevice::connect(device, &QIODevice::readyRead,
-    [this]
-    {
-        QByteArray data = m_priv->m_device->readAll();
-        qDebug() << "Read data: " << data.toHex().data();
-        Protocol protocol = Protocol::createProtocol(data);
-        dispatch(protocol);
-    });
+    connect(device, SIGNAL(readyRead()), this, SLOT(read()));
     m_priv->m_device = device;
+}
+
+void ProtocolDispatcher::read()
+{
+    QByteArray data = m_priv->m_device->readAll();
+    qDebug() << "Read data: " << data.toHex().data();
+    Protocol protocol = Protocol::createProtocol(data);
+    dispatch(protocol);
 }
 
 qint64 ProtocolDispatcher::send(const Message* message)

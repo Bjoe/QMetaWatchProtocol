@@ -11,7 +11,7 @@ namespace core {
 class Message
 {
 public:
-    Message() =default;
+    Message();
     virtual ~Message();
 
     Protocol createProtocol() const;
@@ -24,9 +24,9 @@ protected:
             int responseType);
 
 private:
-    std::function<void (Protocol&)> m_requestHandler = {};
-    std::function<void (Protocol&)> m_responseHandler = {};
-    int m_responseType = 0;
+    std::function<void (Protocol&)> m_requestHandler;
+    std::function<void (Protocol&)> m_responseHandler;
+    int m_responseType;
 };
 
 } // namespace core

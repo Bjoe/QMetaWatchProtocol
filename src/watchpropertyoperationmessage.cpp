@@ -10,7 +10,10 @@ namespace qmwp {
 class WatchPropertyOperationMessage::Private
 {
 public:
-    std::bitset<8> m_option{ "00000000" };
+	Private() : m_option("00000000")
+	{}
+
+    std::bitset<8> m_option;
 };
 
 WatchPropertyOperationMessage::WatchPropertyOperationMessage()

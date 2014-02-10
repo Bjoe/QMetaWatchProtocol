@@ -11,11 +11,19 @@ namespace core {
 class Protocol::Private
 {
 public:
-    QByteArray m_payload {};
-    QString m_error = "";
-    quint8 m_type = 0x00;
-    quint8 m_option = 0x00;
-    bool m_valid = false;
+	Private() :
+		m_payload(),
+		m_error(""),
+		m_type(0x00),
+		m_option(0x00),
+		m_valid(false)
+	{}
+
+    QByteArray m_payload;
+    QString m_error;
+    quint8 m_type;
+    quint8 m_option;
+    bool m_valid;
 };
 
 Protocol::Protocol()

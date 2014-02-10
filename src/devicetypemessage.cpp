@@ -7,7 +7,10 @@ namespace qmwp {
 class DeviceTypeMessage::Private
 {
 public:
-    Type m_type = Type::RESERVED;
+	Private() : m_type(Type::RESERVED)
+	{}
+
+    Type m_type;
 };
 
 DeviceTypeMessage::DeviceTypeMessage(QObject *parent)

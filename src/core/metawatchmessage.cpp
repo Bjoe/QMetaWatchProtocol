@@ -3,6 +3,12 @@
 namespace qmwp {
 namespace core {
 
+Message::Message() :
+		m_requestHandler(),
+		m_responseHandler(),
+		m_responseType(0)
+{}
+
 Message::~Message()
 {
 

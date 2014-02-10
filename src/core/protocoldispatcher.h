@@ -11,8 +11,10 @@
 namespace qmwp {
 namespace core {
 
-class ProtocolDispatcher
+class ProtocolDispatcher : public QObject
 {
+	Q_OBJECT
+
 public:
     ProtocolDispatcher();
     ~ProtocolDispatcher();
@@ -23,6 +25,9 @@ public:
     void addHandler(Message *handler);
 
     void dispatch(Protocol protocol);
+
+private slots:
+	void read();
 
 private:
     class Private;
