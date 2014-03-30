@@ -31,6 +31,10 @@ endif()
 
 set( BLACKBERRY_TOOLCHAIN_ROOT "$ENV{QNX_HOST}" )
 set( BLACKBERRY_TARGET_ROOT "$ENV{QNX_TARGET}" )
+if( NOT BLACKBERRY_TOOLCHAIN_ROOT OR NOT BLACKBERRY_TARGET_ROOT )
+ message(FATAL_ERROR "BBNDK enviroment not set ! Please source .../bbndk/bbndk-env_XXXX.sh")
+endif()
+
 set( CMAKE_SYSTEM_NAME QNX )
 set( CMAKE_SYSTEM_VERSION 1 )
 
@@ -97,19 +101,23 @@ list( APPEND BLACKBERRY_SYSTEM_INCLUDE_DIRS "${BLACKBERRY_TARGET_ROOT}/qnx6/usr/
 
 # Flags and preprocessor definitions
 if( BLACKBERRY_ARCHITECTURE STREQUAL "arm" )
- set( BLACKBERRY_CC_FLAGS  " -V4.6.3,gcc_ntoarmv7le -D__QNX__" )
- set( BLACKBERRY_CXX_FLAGS " -V4.6.3,gcc_ntoarmv7le -Y_gpp -D__QNX__" )
+ set( BLACKBERRY_CC_FLAGS  " -Vgcc_ntoarmv7le -mcpu=cortex-a9 " )
+ set( BLACKBERRY_CXX_FLAGS " -Vgcc_ntoarmv7le -mcpu=cortex-a9 " )
 else()
- set( BLACKBERRY_CC_FLAGS  " -V4.6.3,gcc_ntox86 -D__QNX__" )
- set( BLACKBERRY_CXX_FLAGS " -V4.6.3,gcc_ntox86 -Y_gpp -D__QNX__" )
+ set( BLACKBERRY_CC_FLAGS  " -Vgcc_ntox86" )
+ set( BLACKBERRY_CXX_FLAGS " -Vgcc_ntox86" )
 endif()
 set( BLACKBERRY 1 )
+
+# By default Dinkum C++ Library used. The GNU C++ lib -Y_gpp doesnt work :-(
+set ( BLACKBERRY_CXX_FLAGS "${BLACKBERRY_CXX_FLAGS} -lang-c++ -fno-strict-aliasing -fstack-protector -fstack-protector-all -Wall -D__QNX__ -D__QNXNTO__ -D_REENTRANT")
+set ( BLACKBERRY_CC_FLAGS "${BLACKBERRY_CC_FLAGS} -lang-c -fno-strict-aliasing -fstack-protector -fstack-protector-all -Wall -D__QNX__ -D__QNXNTO__ -D_REENTRANT")
 
 # NDK flags
 set( CMAKE_CXX_FLAGS "${BLACKBERRY_CXX_FLAGS}" )
 set( CMAKE_C_FLAGS "${BLACKBERRY_CC_FLAGS}" )
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions" )
-set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fexceptions" )
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -DQT_NO_IMPORT_QT47_QML -DQ_OS_BLACKBERRY -DQT_DECLARATIVE_LIB -DQT_CORE_LIB -DQT_SHARED" )
+set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fexceptions -DQT_NO_IMPORT_QT47_QML -DQ_OS_BLACKBERRY -DQT_DECLARATIVE_LIB -DQT_CORE_LIB -DQT_SHARED" )
 
 # Release and Debug flags
 if( BLACKBERRY_ARCHITECTURE STREQUAL "arm" )
@@ -133,13 +141,16 @@ set( CMAKE_SHARED_LINKER_FLAGS "" CACHE STRING "linker flags" )
 SET( CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "" CACHE STRING "linker flags")
 SET( CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "" CACHE STRING "linker flags")
 set( CMAKE_MODULE_LINKER_FLAGS "" CACHE STRING "linker flags" )
-set( CMAKE_EXE_LINKER_FLAGS "-lstdc++ -lm -lEGL -lGLESv2 -lbps -lscreen" CACHE STRING "linker flags" )
+set( CMAKE_EXE_LINKER_FLAGS "-Wl,-z,relro -Wl,-z,now -lm -lbps" CACHE STRING "linker flags" )
+# For security: -Wl,-z,relro -Wl,-z,now
+# see https://developer.blackberry.com/native/documentation/core/com.qnx.doc.native_sdk.security/topic/using_compiler_linker_defenses.html
+# -lstdc++ -lEGL -lGLESv2 -lscreen
 
 # Finish flags
 set( BLACKBERRY_CXX_FLAGS    "${BLACKBERRY_CXX_FLAGS}"    CACHE INTERNAL "Extra BlackBerry compiler flags")
 set( BLACKBERRY_LINKER_FLAGS "${BLACKBERRY_LINKER_FLAGS}" CACHE INTERNAL "Extra BlackBerry linker flags")
 set( CMAKE_CXX_FLAGS  "${BLACKBERRY_CXX_FLAGS} ${CMAKE_CXX_FLAGS}" )
-set( CMAKE_C_FLAGS    "${BLACKBERRY_CXX_FLAGS} ${CMAKE_C_FLAGS}" )
+set( CMAKE_C_FLAGS    "${BLACKBERRY_CC_FLAGS} ${CMAKE_C_FLAGS}" )
 
 # Global flags for cmake client scripts to change behavior
 set( BLACKBERRY True )
