@@ -13,6 +13,9 @@ set (PROJECT_VERSION ${Project_VERSION_MAJOR}.${Project_VERSION_MINOR}.${Project
 
 # activate C++ 11
 if(${BLACKBERRY})
+  if( NOT BLACKBERRY_TOOLCHAIN_ROOT OR NOT BLACKBERRY_TARGET_ROOT )
+    message(FATAL_ERROR "BBNDK enviroment not set ! Please source .../bbndk/bbndk-env_XXXX.sh")
+  endif()
   add_definitions(-Wc,-std=c++0x)
 else(${BLACKBERRY})
   add_definitions(-std=c++11)
@@ -75,7 +78,7 @@ else(${Qt4})
   find_package(Qt5Core REQUIRED)
 endif(${Qt4})
 
-find_package(Boost 1.5 REQUIRED)
+find_package(Boost 1.52 REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
 if(${DOC})
