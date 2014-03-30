@@ -1,7 +1,7 @@
 #ifndef QMWP_CORE_PROTOCOLDISPATCHER_H
 #define QMWP_CORE_PROTOCOLDISPATCHER_H
 
-#include <memory>
+#include <boost/tr1/memory.hpp>
 #include <QObject>
 #include <QIODevice>
 
@@ -31,7 +31,7 @@ private slots:
 
 private:
     class Private;
-    std::unique_ptr<Private> m_priv;
+    std::tr1::shared_ptr<Private> m_priv;
 };
 
 } // namespace core

@@ -1,7 +1,7 @@
 #ifndef QMWP_REALTIMECLOCKMESSAGE_H
 #define QMWP_REALTIMECLOCKMESSAGE_H
 
-#include <memory>
+#include <boost/tr1/memory.hpp>
 
 #include <QDate>
 #include <QTime>
@@ -31,7 +31,7 @@ public:
 
 private:
     class Private;
-    std::unique_ptr<Private> m_priv;
+    std::tr1::shared_ptr<Private> m_priv;
 };
 
 } // namespace qmwp

@@ -31,8 +31,8 @@ void Message::handle(Protocol &protocol)
     m_responseHandler(protocol);
 }
 
-Message::Message(std::function<void (Protocol &)> request,
-                 std::function<void (Protocol &)> response,
+Message::Message(std::tr1::function<void (Protocol &)> request,
+                 std::tr1::function<void (Protocol &)> response,
                  int responseType)
     : m_requestHandler(request),
       m_responseHandler(response),

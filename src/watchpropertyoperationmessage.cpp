@@ -1,7 +1,7 @@
 #include "watchpropertyoperationmessage.h"
 
 #include <QDebug>
-#include <bitset>
+#include <boost/dynamic_bitset.hpp>
 
 #include "core/metawatchprotocol.h"
 
@@ -10,10 +10,10 @@ namespace qmwp {
 class WatchPropertyOperationMessage::Private
 {
 public:
-	Private() : m_option("00000000")
+    Private() : m_option(8)
 	{}
 
-    std::bitset<8> m_option;
+    boost::dynamic_bitset<> m_option;
 };
 
 WatchPropertyOperationMessage::WatchPropertyOperationMessage()
@@ -27,7 +27,7 @@ WatchPropertyOperationMessage::WatchPropertyOperationMessage()
             [this](core::Protocol& protocol)
             {
                 qint8 option = protocol.option();
-                m_priv->m_option = std::bitset<8>(option);
+                m_priv->m_option = boost::dynamic_bitset<>(8, option);
             },
             0x31
       ),

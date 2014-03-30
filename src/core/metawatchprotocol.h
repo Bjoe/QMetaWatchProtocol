@@ -1,7 +1,7 @@
 #ifndef QMWP_CORE_METAWATCHPROTOCOL_H
 #define QMWP_CORE_METAWATCHPROTOCOL_H
 
-#include <memory>
+#include <boost/tr1/memory.hpp>
 
 #include <QString>
 #include <QByteArray>
@@ -35,7 +35,7 @@ public:
 
 private:
     class Private;
-    std::unique_ptr<Private> m_priv;
+    std::tr1::shared_ptr<Private> m_priv;
 };
 
 } // namespace core

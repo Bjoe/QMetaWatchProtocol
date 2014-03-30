@@ -1,8 +1,10 @@
 #ifndef QMWP_WATCHPROPERTYOPERATIONMESSAGE_H
 #define QMWP_WATCHPROPERTYOPERATIONMESSAGE_H
 
-#include <memory>
+#include <boost/tr1/memory.hpp>
+
 #include <QObject>
+#include <QSharedPointer>
 
 #include "core/metawatchmessage.h"
 
@@ -83,7 +85,7 @@ signals:
 
 private:
     class Private;
-    std::unique_ptr<Private> m_priv;
+    std::tr1::shared_ptr<Private> m_priv;
 };
 
 } // namespace qmwp
