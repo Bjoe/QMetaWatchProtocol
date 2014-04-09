@@ -1,6 +1,5 @@
 #include "watchpropertyoperationmessage.h"
 
-#include <QDebug>
 #include <bitset>
 
 #include "core/metawatchprotocol.h"
@@ -13,13 +12,12 @@ public:
     std::bitset<8> m_option{ "00000000" };
 };
 
-WatchPropertyOperationMessage::WatchPropertyOperationMessage()
-    : Message(
+WatchPropertyOperationMessage::WatchPropertyOperationMessage(QObject *parent)
+    : QObject(parent), Message(
             [this](core::Protocol& protocol)
             {
                 protocol.setType(0x30);
                 protocol.setOption(m_priv->m_option.to_ulong());
-                qDebug() << "Option " << protocol.option();
             },
             [this](core::Protocol& protocol)
             {

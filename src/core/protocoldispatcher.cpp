@@ -44,7 +44,7 @@ void ProtocolDispatcher::initializeDevice(QIODevice *device)
     m_priv->m_device = device;
 }
 
-qint64 ProtocolDispatcher::send(const Message* message)
+qint64 ProtocolDispatcher::send(const Message* message) const
 {
     Protocol protocol = message->createProtocol();
     QByteArray bytes = protocol.createMessage();
@@ -58,7 +58,7 @@ void ProtocolDispatcher::addHandler(Message *handler)
     m_priv->m_handlers.insert(type, handler);
 }
 
-void ProtocolDispatcher::dispatch(Protocol protocol)
+void ProtocolDispatcher::dispatch(Protocol protocol) const
 {
     int type = protocol.type();
     if(m_priv->m_handlers.contains(type)) {

@@ -18,11 +18,11 @@ public:
     ~ProtocolDispatcher();
 
     void initializeDevice(QIODevice *device);
-    qint64 send(const Message *message);
+    qint64 send(const Message *message) const;
 
     void addHandler(Message *handler);
 
-    void dispatch(Protocol protocol);
+    void dispatch(Protocol protocol) const;
 
 private:
     class Private;

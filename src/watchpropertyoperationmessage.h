@@ -33,7 +33,7 @@ class WatchPropertyOperationMessage : public QObject, public core::Message
     Q_PROPERTY(bool operationChecked READ operationChecked WRITE setOperationChecked NOTIFY operationChanged)
 
 public:
-    WatchPropertyOperationMessage();
+    WatchPropertyOperationMessage(QObject *parent = nullptr);
     virtual ~WatchPropertyOperationMessage();
 
     enum class ClockFormat { H24, H12 };

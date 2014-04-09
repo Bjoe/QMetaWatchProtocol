@@ -24,6 +24,15 @@ set(QT_SRCS
     devicetypemessage.cpp
     realtimeclockmessage.cpp
     watchpropertyoperationmessage.cpp
+    controlfullscreenmessage.cpp
+    writelcdbuffermessage.cpp
+    setwidgetlistmessage.cpp
+    widget.cpp
+    page.cpp
+    screen.cpp
+    normalwidget.cpp
+    clockwidget.cpp
+    widgetpayload.cpp
 )
 
 # configure a header file to pass some of the CMake settings
