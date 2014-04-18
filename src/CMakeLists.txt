@@ -7,6 +7,15 @@ set(HEADERS
     devicetypemessage.h
     realtimeclockmessage.h
     watchpropertyoperationmessage.h
+    controlfullscreenmessage.h
+    writelcdbuffermessage.h
+    setwidgetlistmessage.h
+    widget.h
+    page.h
+    screen.h
+    normalwidget.h
+    clockwidget.h
+    widgetpayload.h
 )
 
 if(${Qt4})
@@ -51,7 +60,7 @@ else(${Qt4})
 endif(${Qt4})
 
 set_target_properties(qmwprotocol PROPERTIES
-  PUBLIC_HEADER "${HEADERS}")
+  PUBLIC_HEADER "${HEADERS};${CMAKE_CURRENT_BINARY_DIR}/config.h")
   
 install(TARGETS qmwprotocol
   # IMPORTANT: Add the qmwprotocol library to the "export-set"
